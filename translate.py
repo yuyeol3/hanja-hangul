@@ -13,22 +13,30 @@ def main():
     hanja_list = set()
 
     for char in text:
-
         if ishanja(char):  # 문자가 한자라면 검사 수행
             hanja_list.add(char)
 
+
+    with open("preferences.json", 'r', encoding="utf8") as f:
+        preference_table = json.load(f)  # 선호하는 한자 음변환 테이블
+
+
     for hanja in hanja_list:
-        for file_name in file_list:
-            with open(f"hangul_hanja/{file_name}", "r", encoding="utf8") as f:
-                hanjas = json.load(f)
+        if hanja in preference_table:
+            text = text.replace(hanja, preference_table[hanja])
 
-            if hanja in hanjas:
-                matching_hangul = file_name.split('.')[0]
+        else:
+            for file_name in file_list:
+                with open(f"hangul_hanja/{file_name}", "r", encoding="utf8") as f:
+                    hanjas = json.load(f)
 
-                while hanja in text:
-                    text = text.replace(hanja, matching_hangul)
+                if hanja in hanjas:
+                    matching_hangul = file_name.split('.')[0]
 
-                break
+                    while hanja in text:
+                        text = text.replace(hanja, matching_hangul)
+
+                    break
 
 
     with open("result.txt", "w", encoding="utf8") as f:
