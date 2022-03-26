@@ -1,0 +1,6 @@
+chromedriver.exe
+result.txt
+text_to_translate.txt
+build/
+dist/
+__pycache__/

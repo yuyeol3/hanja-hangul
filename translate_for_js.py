@@ -1,7 +1,9 @@
 import json
 import os
 import han_check
-
+import clipboard
+# import sys
+# sys.path.insert(1, './src/core_program/')  # path에 다음을 끼워넣기
 
 def main():
     file_list = os.listdir("./hangul_hanja")
@@ -50,9 +52,7 @@ def main():
                     break
 
 
-    with open("result.txt", "w", encoding="utf8") as f:
-        f.write(text+'\n')
-
+    clipboard.copy(text)
 
     print(" Done!")  # 완료 표시
 
