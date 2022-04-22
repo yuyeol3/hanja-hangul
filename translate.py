@@ -10,8 +10,6 @@ def main():
 
     hanja_list = get_hanja_sequence(text)
 
-    with open("preferences.json", 'r', encoding="utf8") as f:
-        preference_table = json.load(f)  # 선호하는 한자 음변환 테이블
 
     hanja_hangul_mathcing_table = convert_hanja_to_hangul(hanja_list)
 
@@ -54,6 +52,16 @@ def convert_hanja_to_hangul(hanja_list):
 
     with open("preferences.json", 'r', encoding="utf8") as f:
         preference_table = json.load(f)  # 선호하는 한자 음변환 테이블
+
+    with open("user_preferences.json", "r", encoding="utf8") as f:
+        user_preference_table = json.load(f)
+
+    # 기존 선호 테이블에 유저 선호 테이블 이어붙이기
+    preference_table = list(preference_table.items())
+    preference_table.extend(user_preference_table.items())
+    preference_table = dict(preference_table)
+    del user_preference_table
+
 
     for idx, hanja_str in enumerate(hanja_list):
         converted = hanja_str
