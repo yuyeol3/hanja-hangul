@@ -4,8 +4,7 @@ import han_check
 
 
 def main():
-    file_list = os.listdir("./hangul_hanja")
-
+    # 번역할 테스트 불러오기
     with open("text_to_translate.txt", "r", encoding="utf8") as f:
         text = f.read()
 
@@ -14,41 +13,7 @@ def main():
     with open("preferences.json", 'r', encoding="utf8") as f:
         preference_table = json.load(f)  # 선호하는 한자 음변환 테이블
 
-    hanja_hangul_mathcing_table = dict()
-
-    for idx, hanja_str in enumerate(hanja_list):
-        converted = hanja_str
-
-        # 진행률 표시해주는 코드
-        percentage = ((idx + 1) / len(hanja_list)) * 100
-        percentage = int(percentage)
-        print("\r", end="")
-        print(f"{percentage:3}% ", end="")
-        for i in range(percentage): print("■", end="")
-
-        for hanja in converted:
-            # 선호 한자음이 지정되어 있으면
-            if hanja in preference_table:
-                converted = converted.replace(hanja, preference_table[hanja])
-
-            # 아닌 경우
-            else:
-                for file_name in file_list:
-                    with open(f"hangul_hanja/{file_name}", "r", encoding="utf8") as f:
-                        hanjas = json.load(f)
-
-                    if hanja in hanjas:
-                        matching_hangul = file_name.split('.')[0]
-                        converted = converted.replace(hanja, matching_hangul)
-                        break
-
-        if (2 <= len(converted) and len(converted) <= 4) and (hanja_str[0] == '金' or hanja_str[0] == '金'):
-            converted = list(converted)
-            converted[0] = "김"
-            converted = list_to_str(converted)
-
-        hanja_hangul_mathcing_table[hanja_str] = converted  # 변환된 최종 문자열을 한자 리스트에 바꿔넣음
-
+    hanja_hangul_mathcing_table = convert_hanja_to_hangul(hanja_list)
 
     for hanja_str in hanja_hangul_mathcing_table:
         hanja_hangul_mathcing_table[hanja_str] = initial_law(hanja_hangul_mathcing_table[hanja_str])
