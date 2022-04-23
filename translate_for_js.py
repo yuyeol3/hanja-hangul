@@ -34,7 +34,7 @@ def get_hanja_sequence(text: str):
         if ishanja(char):  # 문자가 한자라면 검사 수행
             hanja_seqence += char
 
-        if ishanja(prev) and (ishanja(char) is False or idx == text_end_idx):
+        if ((ishanja(prev) and ishanja(char) is False) or idx == text_end_idx):
             hanja_list.append(hanja_seqence)
             hanja_seqence = ''
 
@@ -42,6 +42,7 @@ def get_hanja_sequence(text: str):
 
 
     return hanja_list
+
 
 
 def convert_hanja_to_hangul(hanja_list):
